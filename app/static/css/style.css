@@ -1,0 +1,17 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0 1rem 2rem;
+  line-height: 1.5;
+}
+
+header {
+  margin: 1.5rem 0;
+}
+
+a {
+  color: #164ec5;
+}
