@@ -51,6 +51,10 @@ class PortfolioService:
         all_items = self._repository.list_items()
 
         try:
+            # Build a linked list of known slugs and use find() to check
+            # existence before delegating the full fetch to the repository.
+            # This intentionally exercises linked_list traversal as part of
+            # the assignment integration.
             slugs = linked_list()
             for item in all_items:
                 slugs.append(item.slug)
