@@ -84,7 +84,7 @@
 
       {% if portfolios %}
         <div class="cards-grid">
-          {% for item in sorted_by_title %}
+          {% for item in portfolios %}
             <a href="{{ url_for('portfolio.portfolio_detail', slug=item.slug) }}" class="project-card" style="text-decoration:none;">
               <div class="card-icon">🚀</div>
               <div class="card-author">{{ item.student_name }}</div>
@@ -97,48 +97,91 @@
           {% endfor %}
         </div>
 
-        {# ── Data-structure powered insights ──────────────────── #}
+        {# ── Data-structure powered insights ──────────────────────
+           Each <li> is gated on its own feature value.  A feature stays
+           hidden until the matching data structure is implemented, so the
+           page gradually fills in as students complete each assignment. #}
         <div class="ds-insights" style="margin-top: 3rem;">
           <h3>Behind the scenes</h3>
           <p style="color: var(--color-text-muted);">
-            The lists below are computed by the data structures from
-            assignments 2&ndash;10.
+            Each line below is powered by exactly one data structure from
+            assignments 1&ndash;10. Sections appear here as their data
+            structures are implemented.
           </p>
           <ul>
-            <li>
-              <strong>Sorted by student (bubble sort):</strong>
-              {{ sorted_by_student | map(attribute='student_name') | join(', ') }}
-            </li>
-            <li>
-              <strong>Slugs in alphabetical order (BST in-order):</strong>
-              {{ alphabetical_slugs | join(', ') }}
-            </li>
-            <li>
-              <strong>Prerequisite order (topological sort):</strong>
-              {{ prerequisite_order | join(' → ') }}
-            </li>
-            <li>
-              <strong>Next featured (min-heap peek):</strong>
-              {{ featured_next or 'n/a' }}
-            </li>
-            <li>
-              <strong>Possible orderings (n! via recursion):</strong>
-              {{ ordering_count }}
-            </li>
-            <li>
-              <strong>Sample permutation (backtracking):</strong>
-              {{ sample_ordering | join(', ') }}
-            </li>
-            <li>
-              <strong>Autocomplete check (trie):</strong>
-              prefix
-              <code>{{ autocomplete_prefix }}</code>
-              {% if autocomplete_hit %}matches at least one slug{% else %}has no matches{% endif %}.
-            </li>
-            {% if next_in_queue %}
+            {% if array_slug_view is not none %}
               <li>
-                <strong>Next slug in processing queue:</strong>
+                <strong>Array view of slugs (assignment 1 — array):</strong>
+                {{ array_slug_view | join(', ') }}
+              </li>
+            {% endif %}
+            {% if linked_slug_chain is not none %}
+              <li>
+                <strong>Linked-list slug chain (assignment 1 — linked_list):</strong>
+                {{ linked_slug_chain | join(' → ') }}
+              </li>
+            {% endif %}
+            {% if next_in_queue is not none %}
+              <li>
+                <strong>Next slug in processing queue (assignment 2 — queue):</strong>
                 {{ next_in_queue }}
+              </li>
+            {% endif %}
+            {% if sorted_by_title is not none %}
+              <li>
+                <strong>Sorted by title (assignment 3 — merge_sort):</strong>
+                {{ sorted_by_title | map(attribute='title') | join(', ') }}
+              </li>
+            {% endif %}
+            {% if sorted_by_student is not none %}
+              <li>
+                <strong>Sorted by student (assignment 3 — bubble_sort):</strong>
+                {{ sorted_by_student | map(attribute='student_name') | join(', ') }}
+              </li>
+            {% endif %}
+            {% if ordering_count is not none %}
+              <li>
+                <strong>Possible orderings n! (assignment 5 — factorial):</strong>
+                {{ ordering_count }}
+              </li>
+            {% endif %}
+            {% if sample_ordering is not none %}
+              <li>
+                <strong>Sample permutation (assignment 5 — permutations):</strong>
+                {{ sample_ordering | join(', ') }}
+              </li>
+            {% endif %}
+            {% if slug_directory is not none %}
+              <li>
+                <strong>Slug → title directory (assignment 6 — hash_table):</strong>
+                {% for slug, title in slug_directory %}
+                  <code>{{ slug }}</code> → {{ title }}{% if not loop.last %}; {% endif %}
+                {% endfor %}
+              </li>
+            {% endif %}
+            {% if alphabetical_slugs is not none %}
+              <li>
+                <strong>Alphabetical slugs (assignment 7 — binary_tree):</strong>
+                {{ alphabetical_slugs | join(', ') }}
+              </li>
+            {% endif %}
+            {% if featured_next is not none %}
+              <li>
+                <strong>Next featured (assignment 7 — min_heap):</strong>
+                {{ featured_next }}
+              </li>
+            {% endif %}
+            {% if autocomplete_hit is not none %}
+              <li>
+                <strong>Autocomplete check (assignment 8 — trie):</strong>
+                prefix <code>{{ autocomplete_prefix }}</code>
+                {% if autocomplete_hit %}matches at least one slug{% else %}has no matches{% endif %}.
+              </li>
+            {% endif %}
+            {% if prerequisite_order is not none %}
+              <li>
+                <strong>Prerequisite order (assignment 10 — topological_sort):</strong>
+                {{ prerequisite_order | join(' → ') }}
               </li>
             {% endif %}
           </ul>

@@ -39,49 +39,67 @@
         </div>
       </div>
 
-      {# ── Data-structure powered insights ──────────────────── #}
+      {# ── Data-structure powered insights ──────────────────────
+         Each <li> is gated on its own feature value.  A feature stays
+         hidden until the matching data structure is implemented, so the
+         page gradually fills in as students complete each assignment. #}
       <aside class="ds-insights" style="margin-top: 3rem;">
         <h3>Behind the scenes</h3>
         <p style="color: var(--color-text-muted);">
-          The information below is produced by the data structures from
-          assignments 2&ndash;10.
+          Each line below is powered by exactly one data structure from
+          assignments 1&ndash;10. Sections appear here as their data
+          structures are implemented.
         </p>
         <ul>
-          <li>
-            <strong>Recently viewed (stack):</strong>
-            {% if recently_viewed %}
-              {{ recently_viewed | join(' ← ') }}
-            {% else %}
-              none yet
-            {% endif %}
-          </li>
-          <li>
-            <strong>Related projects (graph neighbours):</strong>
-            {% if related %}
-              {% for slug in related %}
-                <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ slug }}</a>{% if not loop.last %}, {% endif %}
-              {% endfor %}
-            {% else %}
-              none
-            {% endif %}
-          </li>
-          {% if navigation_chain and navigation_chain|length > 1 %}
+          {% if recently_viewed is not none %}
             <li>
-              <strong>BFS navigation chain:</strong>
+              <strong>Recently viewed (assignment 2 — stack):</strong>
+              {% if recently_viewed %}
+                {{ recently_viewed | join(' ← ') }}
+              {% else %}
+                none yet
+              {% endif %}
+            </li>
+          {% endif %}
+          {% if linear_index is not none %}
+            <li>
+              <strong>Linear-search index (assignment 4 — linear_search):</strong>
+              {{ linear_index }}
+            </li>
+          {% endif %}
+          {% if binary_index is not none %}
+            <li>
+              <strong>Binary-search index (assignment 4 — binary_search):</strong>
+              {{ binary_index }}
+            </li>
+          {% endif %}
+          {% if known_balanced is not none %}
+            <li>
+              <strong>Known to AVL tree (assignment 8 — avl_tree):</strong>
+              {{ 'yes' if known_balanced else 'no' }}
+            </li>
+          {% endif %}
+          {% if related is not none %}
+            <li>
+              <strong>Related projects (assignment 9 — graph):</strong>
+              {% if related %}
+                {% for slug in related %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ slug }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              {% else %}
+                none
+              {% endif %}
+            </li>
+          {% endif %}
+          {% if navigation_chain is not none and navigation_chain | length > 1 %}
+            <li>
+              <strong>BFS navigation chain (assignment 9 — bfs_pathfinder):</strong>
               {{ navigation_chain | join(' → ') }}
             </li>
           {% endif %}
-          <li>
-            <strong>Index (linear search / binary search):</strong>
-            {{ linear_index }} / {{ binary_index }}
-          </li>
-          <li>
-            <strong>Known to AVL tree:</strong>
-            {{ 'yes' if known_balanced else 'no' }}
-          </li>
-          {% if distances %}
+          {% if distances is not none and distances %}
             <li>
-              <strong>Dijkstra distances from here:</strong>
+              <strong>Dijkstra distances (assignment 10 — dijkstra):</strong>
               {% for slug, dist in distances.items() %}
                 {{ slug }} ({{ dist }}){% if not loop.last %}, {% endif %}
               {% endfor %}
