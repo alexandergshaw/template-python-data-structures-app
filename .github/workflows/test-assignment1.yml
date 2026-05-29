@@ -15,6 +15,9 @@ on:
       - ".github/workflows/test-assignment1.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test-assignment1:
     runs-on: ubuntu-latest
