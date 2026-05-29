@@ -1,12 +1,44 @@
 {% extends "base.html" %}
 
-{% block title %}{{ item.title }}{% endblock %}
+{% block title %}{{ item.title }} — Student Portfolio{% endblock %}
 
 {% block content %}
-  <article>
-    <h2>{{ item.title }}</h2>
-    <p><strong>Student:</strong> {{ item.student_name }}</p>
-    <p>{{ item.summary }}</p>
-    <p><a href="{{ item.project_url }}">Project link</a></p>
-  </article>
+  <section class="section">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('portfolio.home') }}">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <a href="{{ url_for('portfolio.home') }}#projects">Projects</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>{{ item.title }}</span>
+      </nav>
+
+      <header class="project-header">
+        <div class="card-author">{{ item.student_name }}</div>
+        <h1>{{ item.title }}</h1>
+        <div class="project-meta">
+          <span class="meta-badge">👤 {{ item.student_name }}</span>
+          <span class="meta-badge">📂 Project</span>
+        </div>
+      </header>
+
+      <div class="project-body">
+        <h2>About this project</h2>
+        <p>{{ item.summary }}</p>
+
+        <div class="project-actions">
+          {% if item.project_url %}
+            <a href="{{ item.project_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              View live project ↗
+            </a>
+          {% endif %}
+          <a href="{{ url_for('portfolio.home') }}#projects" class="btn btn-secondary">
+            ← Back to projects
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
 {% endblock %}

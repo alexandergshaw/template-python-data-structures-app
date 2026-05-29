@@ -4,13 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Student Portfolio{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   </head>
   <body>
-    <header>
-      <h1><a href="{{ url_for('portfolio.home') }}">Student Portfolio</a></h1>
-      <p>Placeholder showcase for student projects.</p>
-    </header>
+    <nav class="site-nav">
+      <div class="container nav-inner">
+        <a href="{{ url_for('portfolio.home') }}" class="nav-logo">
+          dev<span>portfolio</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('portfolio.home') }}">Home</a></li>
+          <li><a href="{{ url_for('portfolio.home') }}#about">About</a></li>
+          <li><a href="{{ url_for('portfolio.home') }}#projects">Projects</a></li>
+          <li><a href="{{ url_for('portfolio.home') }}#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
     <main>{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p class="footer-copy">© {{ 2025 }} Student Portfolio. Built with Flask &amp; Supabase.</p>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('portfolio.home') }}#projects">Projects</a></li>
+          <li><a href="{{ url_for('portfolio.home') }}#contact">Contact</a></li>
+        </ul>
+      </div>
+    </footer>
   </body>
 </html>
