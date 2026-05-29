@@ -416,7 +416,7 @@ class PortfolioService:
         """Return a topological ordering of slugs (listing order as the DAG)."""
         items = self.list_portfolios()
         if not items:
-            return []
+            return _feature(None, lambda: topological_sort().order({}))
         adjacency: dict[str, list[str]] = {item.slug: [] for item in items}
         for i in range(len(items) - 1):
             adjacency[items[i].slug].append(items[i + 1].slug)
