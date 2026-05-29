@@ -36,7 +36,7 @@ def create_app(config_name: str | None = None) -> Flask:
     Uses FLASK_ENV to resolve config when *config_name* is not provided.
     """
     if config_name is None:
-        config_name = os.getenv("FLASK_ENV", "default")
+        config_name = os.getenv("APP_ENV", "default")
 
     app = Flask(__name__)
     app.config.from_object(CONFIG_MAP.get(config_name, CONFIG_MAP["default"]))
