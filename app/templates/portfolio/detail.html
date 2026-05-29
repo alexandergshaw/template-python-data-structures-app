@@ -39,6 +39,57 @@
         </div>
       </div>
 
+      {# ── Data-structure powered insights ──────────────────── #}
+      <aside class="ds-insights" style="margin-top: 3rem;">
+        <h3>Behind the scenes</h3>
+        <p style="color: var(--color-text-muted);">
+          The information below is produced by the data structures from
+          assignments 2&ndash;10.
+        </p>
+        <ul>
+          <li>
+            <strong>Recently viewed (stack):</strong>
+            {% if recently_viewed %}
+              {{ recently_viewed | join(' ← ') }}
+            {% else %}
+              none yet
+            {% endif %}
+          </li>
+          <li>
+            <strong>Related projects (graph neighbours):</strong>
+            {% if related %}
+              {% for slug in related %}
+                <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ slug }}</a>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+              none
+            {% endif %}
+          </li>
+          {% if navigation_chain and navigation_chain|length > 1 %}
+            <li>
+              <strong>BFS navigation chain:</strong>
+              {{ navigation_chain | join(' → ') }}
+            </li>
+          {% endif %}
+          <li>
+            <strong>Index (linear search / binary search):</strong>
+            {{ linear_index }} / {{ binary_index }}
+          </li>
+          <li>
+            <strong>Known to AVL tree:</strong>
+            {{ 'yes' if known_balanced else 'no' }}
+          </li>
+          {% if distances %}
+            <li>
+              <strong>Dijkstra distances from here:</strong>
+              {% for slug, dist in distances.items() %}
+                {{ slug }} ({{ dist }}){% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </li>
+          {% endif %}
+        </ul>
+      </aside>
+
     </div>
   </section>
 {% endblock %}

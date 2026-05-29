@@ -84,7 +84,7 @@
 
       {% if portfolios %}
         <div class="cards-grid">
-          {% for item in portfolios %}
+          {% for item in sorted_by_title %}
             <a href="{{ url_for('portfolio.portfolio_detail', slug=item.slug) }}" class="project-card" style="text-decoration:none;">
               <div class="card-icon">🚀</div>
               <div class="card-author">{{ item.student_name }}</div>
@@ -95,6 +95,53 @@
               </div>
             </a>
           {% endfor %}
+        </div>
+
+        {# ── Data-structure powered insights ──────────────────── #}
+        <div class="ds-insights" style="margin-top: 3rem;">
+          <h3>Behind the scenes</h3>
+          <p style="color: var(--color-text-muted);">
+            The lists below are computed by the data structures from
+            assignments 2&ndash;10.
+          </p>
+          <ul>
+            <li>
+              <strong>Sorted by student (bubble sort):</strong>
+              {{ sorted_by_student | map(attribute='student_name') | join(', ') }}
+            </li>
+            <li>
+              <strong>Slugs in alphabetical order (BST in-order):</strong>
+              {{ alphabetical_slugs | join(', ') }}
+            </li>
+            <li>
+              <strong>Prerequisite order (topological sort):</strong>
+              {{ prerequisite_order | join(' → ') }}
+            </li>
+            <li>
+              <strong>Next featured (min-heap peek):</strong>
+              {{ featured_next or 'n/a' }}
+            </li>
+            <li>
+              <strong>Possible orderings (n! via recursion):</strong>
+              {{ ordering_count }}
+            </li>
+            <li>
+              <strong>Sample permutation (backtracking):</strong>
+              {{ sample_ordering | join(', ') }}
+            </li>
+            <li>
+              <strong>Autocomplete check (trie):</strong>
+              prefix
+              <code>{{ autocomplete_prefix }}</code>
+              {% if autocomplete_hit %}matches at least one slug{% else %}has no matches{% endif %}.
+            </li>
+            {% if next_in_queue %}
+              <li>
+                <strong>Next slug in processing queue:</strong>
+                {{ next_in_queue }}
+              </li>
+            {% endif %}
+          </ul>
         </div>
       {% else %}
         <p style="color: var(--color-text-muted); text-align:center; padding: 3rem 0;">
