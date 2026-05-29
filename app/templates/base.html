@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Student Portfolio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1><a href="{{ url_for('portfolio.home') }}">Student Portfolio</a></h1>
+      <p>Placeholder showcase for student projects.</p>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>
