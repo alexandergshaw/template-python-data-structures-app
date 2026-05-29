@@ -12,7 +12,7 @@ class TestHomePage:
     def test_home_page_loads(self, client):
         response = client.get("/")
         assert response.status_code == 200
-        assert b"Featured Work" in response.data
+        assert b"Student projects" in response.data
         assert b"Project Title" in response.data
         assert b"Student Name" in response.data
 
@@ -21,7 +21,7 @@ class TestStudentDetail:
     def test_placeholder_detail_page_loads(self, client):
         response = client.get("/students/placeholder-project")
         assert response.status_code == 200
-        assert b"Student:" in response.data
+        assert b"Student Name" in response.data
 
     def test_unknown_student_slug_returns_404(self, client):
         response = client.get("/students/missing-slug")

@@ -1,19 +1,123 @@
 {% extends "base.html" %}
 
-{% block title %}Portfolio Home{% endblock %}
+{% block title %}Student Portfolio — Showcasing Student Work{% endblock %}
 
 {% block content %}
-  <section>
-    <h2>Featured Work</h2>
-    <ul>
-      {% for item in portfolios %}
-        <li>
-          <h3>{{ item.title }}</h3>
-          <p><strong>{{ item.student_name }}</strong></p>
-          <p>{{ item.summary }}</p>
-          <a href="{{ url_for('portfolio.portfolio_detail', slug=item.slug) }}">View project</a>
-        </li>
-      {% endfor %}
-    </ul>
+
+  {# ── Hero ──────────────────────────────────────────────────── #}
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">Student Work Showcase</span>
+      <h1>Where great projects<br><em>come to life</em></h1>
+      <p class="hero-sub">
+        A curated collection of projects built by passionate students. Explore
+        real-world applications, creative experiments, and technical deep-dives.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">Browse projects</a>
+        <a href="#about" class="btn btn-secondary">Learn more</a>
+      </div>
+    </div>
   </section>
+
+  <hr class="divider" />
+
+  {# ── About ─────────────────────────────────────────────────── #}
+  <section class="section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <div class="section-header">
+            <span class="section-label">About this portfolio</span>
+            <h2>A place to share &amp; celebrate student work</h2>
+            <p class="section-desc">
+              This portfolio platform is designed to give students a professional
+              space to present their projects to the world.
+            </p>
+          </div>
+          <p>
+            Each project listed here represents hours of learning, problem-solving,
+            and creative thinking. Whether it's a web app, a data-science experiment,
+            or an API, every submission matters.
+          </p>
+          <ul class="skills-list">
+            <li>Python</li>
+            <li>Flask</li>
+            <li>Supabase</li>
+            <li>PostgreSQL</li>
+            <li>REST APIs</li>
+            <li>HTML &amp; CSS</li>
+          </ul>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-number">{{ portfolios | length }}</div>
+            <div class="stat-label">Projects submitted</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">{{ portfolios | map(attribute='student_name') | list | unique | list | length }}</div>
+            <div class="stat-label">Students featured</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Open source</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Ideas to explore</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  {# ── Projects ──────────────────────────────────────────────── #}
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Featured work</span>
+        <h2>Student projects</h2>
+        <p class="section-desc">Click any card to see the full write-up and project link.</p>
+      </div>
+
+      {% if portfolios %}
+        <div class="cards-grid">
+          {% for item in portfolios %}
+            <a href="{{ url_for('portfolio.portfolio_detail', slug=item.slug) }}" class="project-card" style="text-decoration:none;">
+              <div class="card-icon">🚀</div>
+              <div class="card-author">{{ item.student_name }}</div>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.summary }}</p>
+              <div class="card-footer">
+                <span class="card-link">View project</span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p style="color: var(--color-text-muted); text-align:center; padding: 3rem 0;">
+          No projects yet — check back soon!
+        </p>
+      {% endif %}
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  {# ── Contact ───────────────────────────────────────────────── #}
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-section">
+        <h2>Want to be featured?</h2>
+        <p>
+          Are you a student with a project you're proud of? Submit your work and
+          join the showcase — all skill levels are welcome.
+        </p>
+        <a href="mailto:hello@example.com" class="btn btn-primary">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
 {% endblock %}
