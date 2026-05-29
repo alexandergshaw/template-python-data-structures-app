@@ -43,6 +43,30 @@ cp .env.example .env
 flask --app run run
 ```
 
+## Deploying to Vercel
+
+This project is configured for zero-config deployment on [Vercel](https://vercel.com) using the Python serverless runtime.
+
+### Steps
+
+1. Push this repository to GitHub (or connect it directly in the Vercel dashboard).
+2. Import the project in the [Vercel Dashboard](https://vercel.com/new).
+3. Add the following **Environment Variables** in your Vercel project settings:
+
+   | Variable        | Description                          |
+   | --------------- | ------------------------------------ |
+   | `SECRET_KEY`    | A strong random secret key           |
+   | `SUPABASE_URL`  | Your Supabase project URL            |
+   | `SUPABASE_KEY`  | Your Supabase anon or service key    |
+
+4. Deploy. Vercel will automatically detect `vercel.json` and build the serverless function from `api/index.py`.
+
+### How it works
+
+- `vercel.json` routes all incoming requests to a single serverless function (`api/index.py`).
+- `api/index.py` exposes the Flask WSGI `app` object, which Vercel's Python runtime invokes per-request.
+- Static files are served through the Flask app (Vercel's Python runtime handles this efficiently for moderate traffic).
+
 ## Placeholder Behavior
 
 - If Supabase credentials are not configured, the app serves placeholder student portfolio content.
