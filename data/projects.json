@@ -1,0 +1,11 @@
+{
+  "projects": [
+    {
+      "slug": "placeholder-project",
+      "student_name": "Your Name",
+      "title": "Your First Project",
+      "summary": "Add a short description of this project here.",
+      "project_url": "#"
+    }
+  ]
+}
