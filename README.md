@@ -1,6 +1,17 @@
 # template-python-database-app
 
-A best-practice Flask + Supabase portfolio template for showcasing student work.
+A best-practice Flask + Supabase **personal portfolio** template — designed for a single student to show off their own work.
+
+## Personalization
+
+Set the following environment variables (see `.env.example`) to make the site your own. They power the hero, about section, footer, and contact button across every page:
+
+| Variable | Description |
+|----------|-------------|
+| `STUDENT_NAME` | Your name — shown in the nav, hero, footer, and page titles |
+| `STUDENT_TAGLINE` | A one-line tagline shown in the hero section |
+| `STUDENT_BIO` | A short paragraph shown in the "About me" section |
+| `STUDENT_CONTACT_EMAIL` | The email address the "Email me" button opens |
 
 ## Architecture
 

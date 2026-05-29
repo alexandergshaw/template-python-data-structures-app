@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Student Portfolio{% endblock %}</title>
+    <title>{% block title %}{{ student_name }} — Portfolio{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
     <nav class="site-nav">
       <div class="container nav-inner">
         <a href="{{ url_for('portfolio.home') }}" class="nav-logo">
-          dev<span>portfolio</span>
+          {{ student_name }}<span>.dev</span>
         </a>
         <ul class="nav-links">
           <li><a href="{{ url_for('portfolio.home') }}">Home</a></li>
@@ -28,7 +28,7 @@
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p class="footer-copy">© {{ 2025 }} Student Portfolio. Built with Flask &amp; Supabase.</p>
+        <p class="footer-copy">© {{ 2025 }} {{ student_name }}. Built with Flask &amp; Supabase.</p>
         <ul class="footer-links">
           <li><a href="{{ url_for('portfolio.home') }}#projects">Projects</a></li>
           <li><a href="{{ url_for('portfolio.home') }}#contact">Contact</a></li>

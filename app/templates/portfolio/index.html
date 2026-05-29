@@ -1,21 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Student Portfolio — Showcasing Student Work{% endblock %}
+{% block title %}{{ student_name }} — Portfolio{% endblock %}
 
 {% block content %}
 
   {# ── Hero ──────────────────────────────────────────────────── #}
   <section class="hero">
     <div class="container">
-      <span class="hero-eyebrow">Student Work Showcase</span>
-      <h1>Where great projects<br><em>come to life</em></h1>
+      <span class="hero-eyebrow">Portfolio</span>
+      <h1>Hi, I'm {{ student_name }}<br><em>and this is my work</em></h1>
       <p class="hero-sub">
-        A curated collection of projects built by passionate students. Explore
-        real-world applications, creative experiments, and technical deep-dives.
+        {{ student_tagline }}
       </p>
       <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">Browse projects</a>
-        <a href="#about" class="btn btn-secondary">Learn more</a>
+        <a href="#projects" class="btn btn-primary">See my projects</a>
+        <a href="#about" class="btn btn-secondary">About me</a>
       </div>
     </div>
   </section>
@@ -28,17 +27,15 @@
       <div class="about-grid">
         <div class="about-text">
           <div class="section-header">
-            <span class="section-label">About this portfolio</span>
-            <h2>A place to share &amp; celebrate student work</h2>
+            <span class="section-label">About me</span>
+            <h2>A little about who I am &amp; what I build</h2>
             <p class="section-desc">
-              This portfolio platform is designed to give students a professional
-              space to present their projects to the world.
+              {{ student_bio }}
             </p>
           </div>
           <p>
-            Each project listed here represents hours of learning, problem-solving,
-            and creative thinking. Whether it's a web app, a data-science experiment,
-            or an API, every submission matters.
+            Every project below represents hours of learning, problem-solving,
+            and creative thinking — from web apps to data-structure deep-dives.
           </p>
           <ul class="skills-list">
             <li>Python</li>
@@ -52,11 +49,11 @@
         <div class="about-stats">
           <div class="stat-card">
             <div class="stat-number">{{ portfolios | length }}</div>
-            <div class="stat-label">Projects submitted</div>
+            <div class="stat-label">Projects shipped</div>
           </div>
           <div class="stat-card">
-            <div class="stat-number">{{ portfolios | map(attribute='student_name') | list | unique | list | length }}</div>
-            <div class="stat-label">Students featured</div>
+            <div class="stat-number">10</div>
+            <div class="stat-label">Data structures built</div>
           </div>
           <div class="stat-card">
             <div class="stat-number">100%</div>
@@ -78,7 +75,7 @@
     <div class="container">
       <div class="section-header">
         <span class="section-label">Featured work</span>
-        <h2>Student projects</h2>
+        <h2>My projects</h2>
         <p class="section-desc">Click any card to see the full write-up and project link.</p>
       </div>
 
@@ -87,7 +84,6 @@
           {% for item in portfolios %}
             <a href="{{ url_for('portfolio.portfolio_detail', slug=item.slug) }}" class="project-card" style="text-decoration:none;">
               <div class="card-icon">🚀</div>
-              <div class="card-author">{{ item.student_name }}</div>
               <h3>{{ item.title }}</h3>
               <p>{{ item.summary }}</p>
               <div class="card-footer">
@@ -100,12 +96,12 @@
         {# ── Data-structure powered insights ──────────────────────
            Each <li> is gated on its own feature value.  A feature stays
            hidden until the matching data structure is implemented, so the
-           page gradually fills in as students complete each assignment. #}
+           page gradually fills in as each assignment is completed. #}
         <div class="ds-insights" style="margin-top: 3rem;">
           <h3>Behind the scenes</h3>
           <p style="color: var(--color-text-muted);">
-            Each line below is powered by exactly one data structure from
-            assignments 1&ndash;10. Sections appear here as their data
+            Each line below is powered by exactly one data structure I built
+            in assignments 1&ndash;10. Sections appear here as their data
             structures are implemented.
           </p>
           <ul>
@@ -131,12 +127,6 @@
               <li>
                 <strong>Sorted by title (assignment 3 — merge_sort):</strong>
                 {{ sorted_by_title | map(attribute='title') | join(', ') }}
-              </li>
-            {% endif %}
-            {% if sorted_by_student is not none %}
-              <li>
-                <strong>Sorted by student (assignment 3 — bubble_sort):</strong>
-                {{ sorted_by_student | map(attribute='student_name') | join(', ') }}
               </li>
             {% endif %}
             {% if ordering_count is not none %}
@@ -200,12 +190,12 @@
   <section class="section" id="contact">
     <div class="container">
       <div class="contact-section">
-        <h2>Want to be featured?</h2>
+        <h2>Let's get in touch</h2>
         <p>
-          Are you a student with a project you're proud of? Submit your work and
-          join the showcase — all skill levels are welcome.
+          Want to talk about a project, collaborate, or just say hi?
+          I'd love to hear from you.
         </p>
-        <a href="mailto:hello@example.com" class="btn btn-primary">Get in touch</a>
+        <a href="mailto:{{ student_contact_email }}" class="btn btn-primary">Email me</a>
       </div>
     </div>
   </section>
