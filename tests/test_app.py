@@ -12,6 +12,8 @@ class AppFactoryTests(unittest.TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Featured Work", response.data)
+        self.assertIn(b"Project Title", response.data)
+        self.assertIn(b"Student Name", response.data)
 
     def test_placeholder_detail_page_loads(self):
         response = self.client.get("/students/placeholder-project")

@@ -9,6 +9,8 @@ from app.repositories.portfolio_repository import SupabasePortfolioRepository
 class PortfolioService:
     """Coordinates repository calls and applies placeholder defaults."""
 
+    PLACEHOLDER_SLUG = "placeholder-project"
+
     def __init__(self, repository: SupabasePortfolioRepository) -> None:
         self._repository = repository
 
@@ -20,7 +22,7 @@ class PortfolioService:
 
         return [
             PortfolioItem(
-                slug="placeholder-project",
+                slug=self.PLACEHOLDER_SLUG,
                 student_name="Student Name",
                 title="Project Title",
                 summary="Add a short description of the work here.",
@@ -34,7 +36,7 @@ class PortfolioService:
         if item is not None:
             return item
 
-        if slug == "placeholder-project":
+        if slug == self.PLACEHOLDER_SLUG:
             return self.list_portfolios()[0]
 
         return None
