@@ -3,6 +3,12 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
+
+
+# Repository root (two levels up from this file: app/config.py -> app/ -> repo/)
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+_DEFAULT_PROJECTS_PATH = _REPO_ROOT / "data" / "projects.json"
 
 
 class Config:
@@ -23,14 +29,10 @@ class Config:
     )
     STUDENT_CONTACT_EMAIL: str = os.getenv("STUDENT_CONTACT_EMAIL", "hello@example.com")
 
-    # Supabase connection settings
-    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
-    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
-    SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
-
-    # Connection resilience
-    SUPABASE_TIMEOUT: int = int(os.getenv("SUPABASE_TIMEOUT", "10"))
-    SUPABASE_MAX_RETRIES: int = int(os.getenv("SUPABASE_MAX_RETRIES", "3"))
+    # Path to the JSON file that holds all worked projects.
+    PROJECTS_JSON_PATH: str = os.getenv(
+        "PROJECTS_JSON_PATH", str(_DEFAULT_PROJECTS_PATH)
+    )
 
     TEMPLATES_AUTO_RELOAD = True
 
@@ -49,11 +51,9 @@ class ProductionConfig(Config):
 
 
 class TestingConfig(Config):
-    """Configuration used by tests — no real Supabase connection."""
+    """Configuration used by tests."""
 
     TESTING = True
-    SUPABASE_URL = ""
-    SUPABASE_KEY = ""
 
 
 CONFIG_MAP = {

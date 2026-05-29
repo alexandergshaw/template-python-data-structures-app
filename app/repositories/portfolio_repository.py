@@ -1,8 +1,10 @@
-"""Data access layer for portfolio content backed by Supabase."""
+"""Data access layer for portfolio content backed by a local JSON file."""
 
 from __future__ import annotations
 
+import json
 import logging
+from pathlib import Path
 from typing import Any
 
 from app.domain.models import PortfolioItem
@@ -11,59 +13,52 @@ from app.repositories.base import PortfolioRepository
 logger = logging.getLogger(__name__)
 
 
-class SupabasePortfolioRepository(PortfolioRepository):
-    """Repository responsible for reading portfolio records from Supabase.
+class JsonPortfolioRepository(PortfolioRepository):
+    """Repository that reads portfolio records from a JSON file on disk.
 
-    Implements graceful degradation: returns empty results when the client
-    is unavailable rather than raising exceptions to the service layer.
+    The JSON file must contain an object with a top-level ``projects`` list,
+    where each entry has the keys ``slug``, ``student_name``, ``title``,
+    ``summary``, and ``project_url``.
+
+    Implements graceful degradation: returns empty results when the file is
+    missing or malformed rather than raising exceptions to the service layer.
     """
 
-    TABLE_NAME = "portfolio_items"
-
-    def __init__(self, client: Any | None) -> None:
-        self._client = client
+    def __init__(self, source_path: str | Path) -> None:
+        self._source_path = Path(source_path)
 
     def list_items(self) -> list[PortfolioItem]:
-        """Return portfolio items ordered by creation date."""
-        if self._client is None:
-            return []
-
-        try:
-            response = (
-                self._client.table(self.TABLE_NAME)
-                .select("*")
-                .order("created_at", desc=True)
-                .execute()
-            )
-            records = getattr(response, "data", []) or []
-            logger.debug("Fetched %d portfolio items from Supabase.", len(records))
-            return [self._to_item(row) for row in records]
-        except Exception:  # noqa: BLE001
-            logger.exception("Failed to fetch portfolio items from Supabase.")
-            return []
+        """Return every portfolio item from the JSON source, preserving order."""
+        records = self._load_records()
+        logger.debug("Loaded %d portfolio items from %s.", len(records), self._source_path)
+        return [self._to_item(row) for row in records]
 
     def get_item_by_slug(self, slug: str) -> PortfolioItem | None:
-        """Return a single portfolio item by slug."""
-        if self._client is None:
-            return None
+        """Return a single portfolio item matching ``slug`` or ``None``."""
+        for row in self._load_records():
+            if row.get("slug") == slug:
+                return self._to_item(row)
+        return None
+
+    def _load_records(self) -> list[dict[str, Any]]:
+        if not self._source_path.exists():
+            logger.warning("Portfolio JSON file not found at %s.", self._source_path)
+            return []
 
         try:
-            response = (
-                self._client.table(self.TABLE_NAME)
-                .select("*")
-                .eq("slug", slug)
-                .limit(1)
-                .execute()
+            with self._source_path.open("r", encoding="utf-8") as fh:
+                payload = json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            logger.exception("Failed to load portfolio JSON from %s.", self._source_path)
+            return []
+
+        projects = payload.get("projects") if isinstance(payload, dict) else None
+        if not isinstance(projects, list):
+            logger.warning(
+                "Portfolio JSON at %s is missing a 'projects' list.", self._source_path
             )
-            records = getattr(response, "data", []) or []
-            if not records:
-                return None
-            return self._to_item(records[0])
-        except Exception:  # noqa: BLE001
-            logger.exception(
-                "Failed to fetch portfolio item slug=%r from Supabase.", slug
-            )
-            return None
+            return []
+        return [row for row in projects if isinstance(row, dict)]
 
     @staticmethod
     def _to_item(row: dict[str, Any]) -> PortfolioItem:
