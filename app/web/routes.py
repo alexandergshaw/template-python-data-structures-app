@@ -19,10 +19,12 @@ def home():
     service = current_app.extensions["portfolio_service"]
     portfolios = service.list_portfolios()
     autocomplete_prefix = portfolios[0].slug[:2] if portfolios else ""
+    title_by_slug = {item.slug: item.title for item in portfolios}
 
     return render_template(
         "portfolio/index.html",
         portfolios=portfolios,
+        title_by_slug=title_by_slug,
         # assignment 1
         array_slug_view=service.array_slug_view(),
         linked_slug_chain=service.linked_slug_chain(),
@@ -54,6 +56,10 @@ def portfolio_detail(slug: str):
     if item is None:
         abort(404)
 
+    all_items = service.list_portfolios()
+    title_by_slug = {entry.slug: entry.title for entry in all_items}
+    total_projects = len(all_items)
+
     related = service.related_slugs(slug)
     # Pick a chain target from the graph-derived related list if available;
     # otherwise fall back to the slug itself so the BFS feature can still run.
@@ -62,6 +68,8 @@ def portfolio_detail(slug: str):
     return render_template(
         "portfolio/detail.html",
         item=item,
+        title_by_slug=title_by_slug,
+        total_projects=total_projects,
         # assignment 2
         recently_viewed=service.recently_viewed(),
         # assignment 4

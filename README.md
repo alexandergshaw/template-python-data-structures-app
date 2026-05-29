@@ -284,3 +284,14 @@ Returns HTTP 503 when Supabase connectivity is degraded.
 - If Supabase credentials are not configured, the app serves placeholder student portfolio content.
 - Home page: `/`
 - Student detail page: `/students/placeholder-project`
+
+### Data-structure powered features
+
+The home and project pages expose visitor-facing portfolio features (project
+search, a guided tour, recommendations, "you are here" indicators, an editor's
+pick, and more). Each feature is powered by **exactly one** data structure from
+`data_structures/assignment1`–`assignment10`. Until a data structure is
+implemented, its feature stays visible but shows a "work in progress"
+placeholder; as soon as the assignment is complete, the feature comes online
+automatically. The full feature ↔ data-structure mapping is documented in
+`app/services/portfolio_service.py`.
