@@ -503,17 +503,57 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── Data-structure insights ────────────────────────────────── */
+.ds-insights {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-top: 3rem;
+}
+
+.ds-insights h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.4rem;
+}
+
+.ds-insights > p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.ds-insights ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .ds-insights li {
-  margin-bottom: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 .ds-wip {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  border: 1px dashed var(--color-border);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-sm);
-  color: var(--color-text-muted);
-  font-style: italic;
+  background: rgba(210, 153, 34, 0.08);
+  border: 1px solid rgba(210, 153, 34, 0.3);
+  color: #d29922;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 500;
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
