@@ -1,0 +1,40 @@
+name: Test Assignment 1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data_structures/**"
+      - "tests/test_assignment1.py"
+      - ".github/workflows/test-assignment1.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "data_structures/**"
+      - "tests/test_assignment1.py"
+      - ".github/workflows/test-assignment1.yml"
+  workflow_dispatch:
+
+jobs:
+  test-assignment1:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Assignment 1 tests
+        run: pytest tests/test_assignment1.py -p no:cacheprovider --no-cov
