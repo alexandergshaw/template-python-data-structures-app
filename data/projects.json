@@ -6,6 +6,55 @@
       "title": "Your First Project",
       "summary": "Add a short description of this project here.",
       "project_url": "#"
+    },
+    {
+      "slug": "task-tracker-cli",
+      "student_name": "Your Name",
+      "title": "Task Tracker CLI",
+      "summary": "A command-line productivity tool that organizes daily tasks with priorities, due dates, and tag-based filtering, persisted to a local JSON store.",
+      "project_url": "https://github.com/example/task-tracker-cli"
+    },
+    {
+      "slug": "weather-dashboard",
+      "student_name": "Your Name",
+      "title": "Weather Dashboard",
+      "summary": "A responsive web dashboard that aggregates forecasts from a public weather API and visualizes temperature, precipitation, and wind trends across saved locations.",
+      "project_url": "https://github.com/example/weather-dashboard"
+    },
+    {
+      "slug": "recipe-finder",
+      "student_name": "Your Name",
+      "title": "Recipe Finder",
+      "summary": "A Flask application that recommends recipes based on the ingredients you have on hand, with filtering for dietary restrictions and prep time.",
+      "project_url": "https://github.com/example/recipe-finder"
+    },
+    {
+      "slug": "budget-buddy",
+      "student_name": "Your Name",
+      "title": "Budget Buddy",
+      "summary": "A personal finance tracker that categorizes transactions, projects monthly spending, and surfaces savings opportunities through interactive charts.",
+      "project_url": "https://github.com/example/budget-buddy"
+    },
+    {
+      "slug": "study-flashcards",
+      "student_name": "Your Name",
+      "title": "Study Flashcards",
+      "summary": "A spaced-repetition flashcard app that schedules reviews based on recall confidence and tracks long-term retention across subjects.",
+      "project_url": "https://github.com/example/study-flashcards"
+    },
+    {
+      "slug": "trailmap-explorer",
+      "student_name": "Your Name",
+      "title": "Trailmap Explorer",
+      "summary": "An interactive map that lets users discover, rate, and save hiking trails, with offline caching for routes saved before a trip.",
+      "project_url": "https://github.com/example/trailmap-explorer"
+    },
+    {
+      "slug": "bookshelf-api",
+      "student_name": "Your Name",
+      "title": "Bookshelf REST API",
+      "summary": "A REST API for managing a personal reading list, supporting authentication, search, and reading-progress analytics across devices.",
+      "project_url": "https://github.com/example/bookshelf-api"
     }
   ]
 }
