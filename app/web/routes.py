@@ -15,7 +15,7 @@ def home():
 
 
 @bp.get("/students/<slug>")
-def student_project(slug: str):
+def portfolio_detail(slug: str):
     service = current_app.extensions["portfolio_service"]
     item = service.get_portfolio(slug)
     if item is None:
