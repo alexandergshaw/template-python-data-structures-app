@@ -100,9 +100,9 @@ class PortfolioService:
         return [
             PortfolioItem(
                 slug=self.PLACEHOLDER_SLUG,
-                student_name="Student Name",
-                title="Project Title",
-                summary="Add a short description of the work here.",
+                student_name="Your Name",
+                title="Your First Project",
+                summary="Add a short description of this project here.",
                 project_url="#",
             )
         ]

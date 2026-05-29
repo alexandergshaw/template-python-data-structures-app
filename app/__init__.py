@@ -77,4 +77,16 @@ def create_app(config_name: str | None = None) -> Flask:
     app.register_blueprint(portfolio_blueprint)
     app.register_blueprint(health_blueprint)
 
+    # Make single-student personalization available to every template.
+    @app.context_processor
+    def _inject_student_identity() -> dict:
+        return {
+            "student_name": app.config.get("STUDENT_NAME", "Your Name"),
+            "student_tagline": app.config.get("STUDENT_TAGLINE", ""),
+            "student_bio": app.config.get("STUDENT_BIO", ""),
+            "student_contact_email": app.config.get(
+                "STUDENT_CONTACT_EMAIL", "hello@example.com"
+            ),
+        }
+
     return app
