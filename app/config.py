@@ -11,7 +11,6 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-change-me")
     SUPABASE_URL = os.getenv("SUPABASE_URL", "")
     SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
-    SUPABASE_TIMEOUT = int(os.getenv("SUPABASE_TIMEOUT", "10"))
     TEMPLATES_AUTO_RELOAD = True
 
 

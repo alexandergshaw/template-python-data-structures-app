@@ -30,7 +30,11 @@ class PortfolioService:
 
     def get_portfolio(self, slug: str) -> PortfolioItem | None:
         """Find a portfolio item by slug."""
-        for item in self.list_portfolios():
-            if item.slug == slug:
-                return item
+        item = self._repository.get_item_by_slug(slug)
+        if item is not None:
+            return item
+
+        if slug == "placeholder-project":
+            return self.list_portfolios()[0]
+
         return None

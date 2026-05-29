@@ -18,6 +18,10 @@ class AppFactoryTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Student:", response.data)
 
+    def test_unknown_student_slug_returns_404(self):
+        response = self.client.get("/students/missing-slug")
+        self.assertEqual(response.status_code, 404)
+
 
 if __name__ == "__main__":
     unittest.main()
