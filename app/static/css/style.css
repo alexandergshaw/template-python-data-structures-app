@@ -502,6 +502,20 @@ img { display: block; max-width: 100%; }
   border-top: 1px solid var(--color-border);
 }
 
+/* ── Data-structure insights ────────────────────────────────── */
+.ds-insights li {
+  margin-bottom: 0.5rem;
+}
+
+.ds-wip {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 700px) {
   .about-grid { grid-template-columns: 1fr; }

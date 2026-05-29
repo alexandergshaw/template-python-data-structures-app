@@ -93,87 +93,133 @@
           {% endfor %}
         </div>
 
-        {# ── Data-structure powered insights ──────────────────────
-           Each <li> is gated on its own feature value.  A feature stays
-           hidden until the matching data structure is implemented, so the
-           page gradually fills in as each assignment is completed. #}
+        {# ── Ways to explore my work ──────────────────────────────
+           Every section below is a real, visitor-facing portfolio feature.
+           Each one is powered by exactly one data structure from
+           assignments 1&ndash;10.  Until its data structure is implemented
+           (its feature value is ``None``) the feature shows a "work in
+           progress" placeholder, then comes online once the assignment is
+           complete. #}
         <div class="ds-insights" style="margin-top: 3rem;">
-          <h3>Behind the scenes</h3>
+          <h3>Ways to explore my work</h3>
           <p style="color: var(--color-text-muted);">
-            Each line below is powered by exactly one data structure I built
-            in assignments 1&ndash;10. Sections appear here as their data
-            structures are implemented.
+            Handy features to help visitors browse my projects. Each one is
+            powered by a data structure I built in assignments 1&ndash;10, and
+            features marked as work in progress will switch on as I finish them.
           </p>
           <ul>
-            {% if array_slug_view is not none %}
-              <li>
-                <strong>Array view of slugs (assignment 1 — array):</strong>
-                {{ array_slug_view | join(', ') }}
-              </li>
-            {% endif %}
-            {% if linked_slug_chain is not none %}
-              <li>
-                <strong>Linked-list slug chain (assignment 1 — linked_list):</strong>
-                {{ linked_slug_chain | join(' → ') }}
-              </li>
-            {% endif %}
-            {% if next_in_queue is not none %}
-              <li>
-                <strong>Next slug in processing queue (assignment 2 — queue):</strong>
-                {{ next_in_queue }}
-              </li>
-            {% endif %}
-            {% if sorted_by_title is not none %}
-              <li>
-                <strong>Sorted by title (assignment 3 — merge_sort):</strong>
-                {{ sorted_by_title | map(attribute='title') | join(', ') }}
-              </li>
-            {% endif %}
-            {% if ordering_count is not none %}
-              <li>
-                <strong>Possible orderings n! (assignment 5 — factorial):</strong>
-                {{ ordering_count }}
-              </li>
-            {% endif %}
-            {% if sample_ordering is not none %}
-              <li>
-                <strong>Sample permutation (assignment 5 — permutations):</strong>
-                {{ sample_ordering | join(', ') }}
-              </li>
-            {% endif %}
-            {% if slug_directory is not none %}
-              <li>
-                <strong>Slug → title directory (assignment 6 — hash_table):</strong>
+            <li>
+              <strong>🔎 Search my projects (assignment 8 — trie):</strong>
+              {% if autocomplete_hit is not none %}
+                Type-ahead search is live — start typing a project name (e.g.
+                <code>{{ autocomplete_prefix }}</code>) and
+                {% if autocomplete_hit %}you'll see matching projects.{% else %}I'll tell you if nothing matches.{% endif %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — project search will be available once the <code>trie</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>🗂️ Jump to a project (assignment 6 — hash_table):</strong>
+              {% if slug_directory is not none %}
                 {% for slug, title in slug_directory %}
-                  <code>{{ slug }}</code> → {{ title }}{% if not loop.last %}; {% endif %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ title }}</a>{% if not loop.last %} · {% endif %}
                 {% endfor %}
-              </li>
-            {% endif %}
-            {% if alphabetical_slugs is not none %}
-              <li>
-                <strong>Alphabetical slugs (assignment 7 — binary_tree):</strong>
-                {{ alphabetical_slugs | join(', ') }}
-              </li>
-            {% endif %}
-            {% if featured_next is not none %}
-              <li>
-                <strong>Next featured (assignment 7 — min_heap):</strong>
-                {{ featured_next }}
-              </li>
-            {% endif %}
-            {% if autocomplete_hit is not none %}
-              <li>
-                <strong>Autocomplete check (assignment 8 — trie):</strong>
-                prefix <code>{{ autocomplete_prefix }}</code>
-                {% if autocomplete_hit %}matches at least one slug{% else %}has no matches{% endif %}.
-              </li>
-            {% endif %}
-            {% if prerequisite_order is not none %}
-              <li>
-                <strong>Prerequisite order (assignment 10 — topological_sort):</strong>
-                {{ prerequisite_order | join(' → ') }}
-              </li>
-            {% endif %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — the quick project directory will be available once the <code>hash_table</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>🅰️ Browse projects A–Z (assignment 3 — merge_sort):</strong>
+              {% if sorted_by_title is not none %}
+                {{ sorted_by_title | map(attribute='title') | join(', ') }}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — alphabetical browsing will be available once the <code>merge_sort</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>📇 Alphabetical project index (assignment 7 — binary_tree):</strong>
+              {% if alphabetical_slugs is not none %}
+                {% for slug in alphabetical_slugs %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ title_by_slug.get(slug, slug) }}</a>{% if not loop.last %} · {% endif %}
+                {% endfor %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — the A–Z index will be available once the <code>binary_tree</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>👥 Browse by author (assignment 3 — bubble_sort):</strong>
+              {% if sorted_by_student is not none %}
+                {% for entry in sorted_by_student %}
+                  {{ entry.title }} — {{ entry.student_name }}{% if not loop.last %}; {% endif %}
+                {% endfor %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — browsing by author will be available once the <code>bubble_sort</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>⭐ Editor's pick (assignment 7 — min_heap):</strong>
+              {% if featured_next is not none %}
+                Start with <a href="{{ url_for('portfolio.portfolio_detail', slug=featured_next) }}">{{ title_by_slug.get(featured_next, featured_next) }}</a> — my recommended first stop.
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — my featured pick will be highlighted once the <code>min_heap</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>🧭 Take the guided tour (assignment 1 — linked_list):</strong>
+              {% if linked_slug_chain is not none %}
+                {% for slug in linked_slug_chain %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ title_by_slug.get(slug, slug) }}</a>{% if not loop.last %} → {% endif %}
+                {% endfor %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — the guided project tour will be available once the <code>linked_list</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>🎬 Featured lineup (assignment 1 — array):</strong>
+              {% if array_slug_view is not none %}
+                {% for slug in array_slug_view %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ title_by_slug.get(slug, slug) }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — my featured lineup will be available once the <code>array</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>🗺️ Recommended path through my work (assignment 10 — topological_sort):</strong>
+              {% if prerequisite_order is not none %}
+                {% for slug in prerequisite_order %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ title_by_slug.get(slug, slug) }}</a>{% if not loop.last %} → {% endif %}
+                {% endfor %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — a suggested viewing order will be available once the <code>topological_sort</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>🔀 Surprise me — a fresh tour order (assignment 5 — permutations):</strong>
+              {% if sample_ordering is not none %}
+                {% for slug in sample_ordering %}
+                  <a href="{{ url_for('portfolio.portfolio_detail', slug=slug) }}">{{ title_by_slug.get(slug, slug) }}</a>{% if not loop.last %} → {% endif %}
+                {% endfor %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — an alternate tour order will be available once the <code>permutations</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>📣 Up next in the spotlight (assignment 2 — queue):</strong>
+              {% if next_in_queue is not none %}
+                {% if next_in_queue %}<a href="{{ url_for('portfolio.portfolio_detail', slug=next_in_queue) }}">{{ title_by_slug.get(next_in_queue, next_in_queue) }}</a> is up next in my featured rotation.{% else %}Nothing queued yet — visit a project to add it to the rotation.{% endif %}
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — the spotlight rotation will be available once the <code>queue</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
+            <li>
+              <strong>✨ Fun fact (assignment 5 — factorial):</strong>
+              {% if ordering_count is not none %}
+                There are {{ ordering_count }} different orders in which you could explore my projects.
+              {% else %}
+                <span class="ds-wip">🚧 Work in progress — this fun stat will be available once the <code>factorial</code> data structure is implemented.</span>
+              {% endif %}
+            </li>
           </ul>
         </div>
       {% else %}

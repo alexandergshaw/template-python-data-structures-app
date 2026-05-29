@@ -8,30 +8,30 @@ returns a sentinel value (``None`` or ``[]``) and the template hides that
 section.  As students complete each data structure, its feature gradually
 comes online without affecting any other part of the page.
 
-Feature ↔ data-structure mapping:
+Feature ↔ data-structure mapping (each is a visitor-facing portfolio feature):
 
 ==========================  ================================================
-Data structure              Frontend feature
+Data structure              Portfolio feature
 ==========================  ================================================
-``array``                   Array view of slugs (index page)
-``linked_list``             Linked-list slug chain (index page)
-``stack``                   Recently-viewed history (detail page)
-``queue``                   Next slug in processing queue (index page)
-``bubble_sort``             Portfolios sorted by student name (index page)
-``merge_sort``              Portfolios sorted by title — project cards (index)
-``linear_search``           Linear-search index lookup (detail page)
-``binary_search``           Binary-search index lookup (detail page)
-``factorial``               n! possible orderings (index page)
-``permutations``            Sample permutation (index page)
-``hash_table``              Slug → title directory (index page)
-``binary_tree``             Alphabetical slugs via BST in-order (index page)
-``min_heap``                Next featured slug via min-heap peek (index page)
-``avl_tree``                Slug known to AVL membership check (detail page)
-``trie``                    Autocomplete prefix check (index page)
+``array``                   Featured project lineup (index page)
+``linked_list``             Guided project tour (index page)
+``stack``                   Recently viewed projects (detail page)
+``queue``                   Up next in the featured spotlight (index page)
+``bubble_sort``             Browse projects by author (index page)
+``merge_sort``              Browse projects A–Z by title (index page)
+``linear_search``           "Where this fits in my work" position (detail page)
+``binary_search``           Alphabetical position of a project (detail page)
+``factorial``               "Fun fact" — ways to explore the projects (index)
+``permutations``            Surprise me — a fresh tour order (index page)
+``hash_table``              Jump-to-a-project directory (index page)
+``binary_tree``             Alphabetical project index (index page)
+``min_heap``                Editor's pick / recommended first stop (index page)
+``avl_tree``                "Part of my curated catalog" badge (detail page)
+``trie``                    Search-my-projects type-ahead (index page)
 ``graph``                   Related projects (detail page)
-``bfs_pathfinder``          BFS navigation chain (detail page)
-``dijkstra``                Similarity distances (detail page)
-``topological_sort``        Prerequisite order (index page)
+``bfs_pathfinder``          Discover connected work (detail page)
+``dijkstra``                Most similar projects (detail page)
+``topological_sort``        Recommended path through my work (index page)
 ==========================  ================================================
 """
 
@@ -168,9 +168,22 @@ class PortfolioService:
     # assignment2 — ``stack``
     # ------------------------------------------------------------------
     def recently_viewed(self, limit: int = 5) -> list[str] | None:
-        """Return the most recently viewed slugs, newest first."""
+        """Return the most recently viewed slugs, newest first.
+
+        Returns ``None`` only when the ``stack`` data structure is not yet
+        implemented, so the view can show a "work in progress" placeholder.
+        When the stack is implemented but no projects have been visited, an
+        empty list is returned instead.
+        """
 
         def read() -> list[str]:
+            # Probe a throwaway stack so an unimplemented data structure
+            # surfaces as ``NotImplementedError`` (→ ``None`` → placeholder)
+            # even though visit recording in ``get_portfolio`` is best-effort.
+            probe = stack()
+            probe.push(self.PLACEHOLDER_SLUG)
+            probe.pop()
+
             buffered: list[str] = []
             while len(self._history) > 0:
                 buffered.append(self._history.pop())
@@ -184,11 +197,17 @@ class PortfolioService:
     # assignment2 — ``queue``
     # ------------------------------------------------------------------
     def next_in_processing_queue(self) -> str | None:
-        """Peek at the next slug awaiting background processing."""
+        """Peek at the next slug awaiting background processing.
 
-        def peek() -> str | None:
+        Returns ``None`` only when the ``queue`` data structure is not yet
+        implemented (its methods raise ``NotImplementedError``).  When the
+        queue is implemented but simply empty, an empty string is returned so
+        the view can distinguish "work in progress" from "nothing queued yet".
+        """
+
+        def peek() -> str:
             if len(self._processing) == 0:
-                return None
+                return ""
             return self._processing.peek()
 
         return _feature(None, peek)
@@ -392,11 +411,23 @@ class PortfolioService:
     # assignment10 — ``dijkstra``
     # ------------------------------------------------------------------
     def similarity_distances(self, start_slug: str) -> dict[str, int] | None:
-        """Return Dijkstra distances from ``start_slug`` to every reachable slug."""
+        """Return Dijkstra "closeness" scores from ``start_slug`` to other projects.
+
+        The starting project is omitted from the result so the feature can
+        present it as a ranked list of *other* projects most similar to the
+        one being viewed.
+        """
         adjacency = self._build_weighted_adjacency()
         if start_slug not in adjacency:
             return None
-        return _feature(None, lambda: dijkstra().shortest_paths(adjacency, start_slug))
+
+        def build() -> dict[str, int]:
+            distances = dijkstra().shortest_paths(adjacency, start_slug)
+            return {
+                slug: dist for slug, dist in distances.items() if slug != start_slug
+            }
+
+        return _feature(None, build)
 
     def _build_weighted_adjacency(self) -> dict[str, dict[str, int]]:
         """Weighted directed adjacency keyed by slug (title-length deltas)."""
