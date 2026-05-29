@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from app.domain.models import PortfolioItem
-from app.repositories.portfolio_repository import SupabasePortfolioRepository
+from app.repositories.base import PortfolioRepository
 
 
 class PortfolioService:
@@ -11,7 +11,7 @@ class PortfolioService:
 
     PLACEHOLDER_SLUG = "placeholder-project"
 
-    def __init__(self, repository: SupabasePortfolioRepository) -> None:
+    def __init__(self, repository: PortfolioRepository) -> None:
         self._repository = repository
 
     def list_portfolios(self) -> list[PortfolioItem]:
